@@ -5,6 +5,7 @@ namespace Tests;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Slim\Factory\ServerRequestCreatorFactory;
 use WilliamSampaio\SlimFlashMessages\MessageProvider;
 
@@ -24,6 +25,37 @@ class MessageProviderTest extends TestCase
     public function test_storage_valid()
     {
         $this->assertArrayHasKey('slim_flash_messages', $this->storage);
+    }
+
+    public function test_storage_is_null_exception()
+    {
+        $this->expectException(RuntimeException::class);
+        $storage = null;
+        new MessageProvider($storage);
+    }
+
+    public function test_storage_session()
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+        new MessageProvider();
+        $this->assertArrayHasKey('slim_flash_messages', $_SESSION);
+        session_unset();
+    }
+
+    public function test_storage_invalid_exception()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $storage = false;
+        new MessageProvider($storage);
+    }
+
+    public function test_storagekey_is_valid()
+    {
+        $storage = [];
+        new MessageProvider($storage, 'test');
+        $this->assertArrayHasKey('test', $storage);
     }
 
     public function test_add_expect_invalid_key()
@@ -103,5 +135,14 @@ class MessageProviderTest extends TestCase
         $request = $serverRequestCreator->createServerRequestFromGlobals();
         $request = $request->withAttribute('slim_flash_messages', $this->messageProvider);
         $this->assertInstanceOf(MessageProvider::class, $this->messageProvider::fromRequest($request));
+    }
+
+    public function test_fromrequest_exception()
+    {
+        $serverRequestCreator = ServerRequestCreatorFactory::create();
+        $request = $serverRequestCreator->createServerRequestFromGlobals();
+        $request = $request->withAttribute('test', $this->messageProvider);
+        $this->expectException(RuntimeException::class);
+        $this->messageProvider::fromRequest($request);
     }
 }
