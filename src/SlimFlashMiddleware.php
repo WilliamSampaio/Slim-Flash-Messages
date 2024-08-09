@@ -11,7 +11,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 use Slim\App;
 
-class MessageProviderMiddleware implements MiddlewareInterface
+class SlimFlashMiddleware implements MiddlewareInterface
 {
     protected MessageProvider $messageProvider;
 

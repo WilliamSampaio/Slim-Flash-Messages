@@ -4,7 +4,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 
-class MessageProviderMiddlewareTest extends TestCase
+class SlimFlashMiddlewareTest extends TestCase
 {
     public function test_middleware()
     {
