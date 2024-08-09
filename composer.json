@@ -1,16 +1,35 @@
 {
     "name": "williamsampaio/slim-flash-messages",
+    "description": "Slim Framework Flash message service provider",
     "type": "library",
+    "keywords": [
+        "slim",
+        "framework",
+        "provider",
+        "flash",
+        "message",
+        "twig",
+        "extension"
+    ],
+    "homepage": "https://github.com/WilliamSampaio/Slim-Flash-Messages",
     "license": "MIT",
     "autoload": {
         "psr-4": {
             "WilliamSampaio\\SlimFlashMessages\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
-            "name": "William Sampaio"
+            "name": "William Sampaio",
+            "email": "1997wbms@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "phpunit/phpunit": "^11.3"
+    }
 }
