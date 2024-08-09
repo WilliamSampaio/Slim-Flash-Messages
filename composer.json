@@ -1,0 +1,16 @@
+{
+    "name": "williamsampaio/slim-flash-messages",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "WilliamSampaio\\SlimFlashMessages\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "William Sampaio"
+        }
+    ],
+    "require": {}
+}
