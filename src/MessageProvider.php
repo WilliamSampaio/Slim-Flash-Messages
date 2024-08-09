@@ -60,6 +60,14 @@ class MessageProvider
      */
     public function add($key, $data)
     {
+        if (is_null($key) || empty($key) || !is_string($key)) {
+            throw new InvalidArgumentException('Invalid key.');
+        }
+
+        if (empty($data)) {
+            throw new InvalidArgumentException('Invalid data.');
+        }
+
         // Create Array for this key
         if (!isset($this->storage[$this->storageKey][$key])) {
             $this->storage[$this->storageKey][$key] = [];
