@@ -35,7 +35,8 @@
     },
     "require": {
         "slim/slim": "^4.14",
-        "slim/psr7": "^1.7"
+        "slim/psr7": "^1.7",
+        "twig/twig": "^3.11"
     },
     "scripts": {
         "test": "phpunit tests --color",
