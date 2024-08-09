@@ -39,7 +39,7 @@
         "twig/twig": "^3.11"
     },
     "scripts": {
-        "test": "phpunit tests --color",
+        "test": "phpunit tests",
         "post-install-cmd": [
             "@test"
         ]
