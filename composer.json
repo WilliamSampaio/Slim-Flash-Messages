@@ -39,7 +39,7 @@
         "twig/twig": "^3.11"
     },
     "scripts": {
-        "test": "phpunit tests",
+        "test": "phpunit",
         "post-install-cmd": [
             "@test"
         ]
