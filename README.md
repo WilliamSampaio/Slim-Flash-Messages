@@ -247,6 +247,14 @@ It receives two parameters, `key` *(string)* and `remove` *(bool = ***true***)*.
 
 ### flash_has()
 
+It receives one parameters, `key` *(string)*. Checks if a key is defined in the storage. Return `true` or `false`.
+
+- `key`: The key that will be checked.
+
+```twig
+{{ flash_has('messages') ? 'exists!' : "it doesn't exist..." }}
+```
+
 ### flash_clear()
 
 ### flash_clear_all()
