@@ -195,6 +195,28 @@ When you complete the up process, access:
 - [http://localhost:8080/example1/](http://localhost:8080/example1/)
 - [http://localhost:8080/example2/](http://localhost:8080/example2/)
 
+## Custom Twig Functions
+
+`SlimFlashTwigExtension` provides these functions to your Twig templates.
+
+### flash()
+
+It receives two optional parameters, `key` *(string/null = ***null***)* and *clear (bool = ***true***)*.
+
+- `key`: If is not specified, an array with all the data in storage will be returned, otherwise only the array with the data indexed by the key value will be returned.
+- `clear`: If is false, the items will not be removed from storage after the function is called.
+
+#### Usage
+
+```twig
+{% for msg in flash('messages', false) %}
+<div class="alert alert-{{ msg.alert }} alert-dismissible fade show" role="alert">
+    {{ msg.text }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+```
+
 ## Tests
 
 To execute the test suite, you'll need to clone the repository and install the dependencies.
