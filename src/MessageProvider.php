@@ -49,7 +49,10 @@ class MessageProvider
             throw new InvalidArgumentException('Storage must be an array or implement \ArrayAccess.');
         }
 
-        $this->storage[$this->storageKey] = [];
+        // Only if the storage key is not defined will this preserve any other previously set data
+        if (!array_key_exists($this->storageKey, $this->storage)) {
+            $this->storage[$this->storageKey] = [];
+        }
     }
 
     /**
@@ -58,7 +61,7 @@ class MessageProvider
      * @param string $key The key to store the message or data under
      * @param mixed $message Message or data to be retrieved in the next request
      */
-    public function add($key, $data)
+    public function add(string $key, $data)
     {
         if (is_null($key) || empty($key) || !is_string($key)) {
             throw new InvalidArgumentException('Invalid key.');
@@ -93,7 +96,7 @@ class MessageProvider
      * @param string $key The key to get the message or data from
      * @return mixed|null Messages or data stored
      */
-    public function get($key)
+    public function get(string $key)
     {
         $messages = $this->getAll();
         return (isset($messages[$key])) ? $messages[$key] : null;
@@ -103,17 +106,22 @@ class MessageProvider
      * Get the first message or data
      *
      * @param string $key The key to get the message or data from
+     * @param bool $remove If true removes the item after picking it up
      * @param mixed $default Default value if key doesn't exist
      * @return mixed The message or data
      */
-    public function getFirst($key, $default = null)
+    public function getFirst(string $key, bool $remove = false, $default = null)
     {
-        $messages = $this->get($key);
-
-        if (is_array($messages) && count($messages) > 0) {
-            return $messages[0];
+        if (
+            array_key_exists($key, $this->storage[$this->storageKey]) &&
+            is_array($this->storage[$this->storageKey][$key]) &&
+            count($this->storage[$this->storageKey][$key]) > 0
+        ) {
+            if ($remove) {
+                return array_shift($this->storage[$this->storageKey][$key]);
+            }
+            return $this->storage[$this->storageKey][$key][0];
         }
-
         return $default;
     }
 
@@ -121,17 +129,23 @@ class MessageProvider
      * Get the last message or data
      *
      * @param string $key The key to get the message or data from
+     * @param bool $remove If true removes the item after picking it up
      * @param mixed $default Default value if key doesn't exist
      * @return mixed The message or data
      */
-    public function getLast($key, $default = null)
+    public function getLast(string $key, bool $remove = false, $default = null)
     {
-        $messages = $this->get($key);
-
-        if (is_array($messages) && count($messages) > 0) {
-            return end($messages);
+        if (
+            array_key_exists($key, $this->storage[$this->storageKey]) &&
+            is_array($this->storage[$this->storageKey][$key]) &&
+            count($this->storage[$this->storageKey][$key]) > 0
+        ) {
+            if ($remove) {
+                return array_pop($this->storage[$this->storageKey][$key]);
+            }
+            $last_key = array_key_last($this->storage[$this->storageKey][$key]);
+            return $this->storage[$this->storageKey][$key][$last_key];
         }
-
         return $default;
     }
 
@@ -164,7 +178,7 @@ class MessageProvider
      * @param string $key The key to clear
      * @return void
      */
-    public function clear($key)
+    public function clear(string $key)
     {
         if (isset($this->storage[$this->storageKey][$key])) {
             unset($this->storage[$this->storageKey][$key]);

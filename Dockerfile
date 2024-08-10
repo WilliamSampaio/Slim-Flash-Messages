@@ -11,3 +11,6 @@ RUN pecl install xdebug \
 ENV XDEBUG_MODE=coverage
 
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
+
+RUN a2enmod rewrite \
+    && a2enmod actions

@@ -97,12 +97,28 @@ class MessageProviderTest extends TestCase
         $this->assertEquals('Hello', $this->messageProvider->getFirst('test'));
     }
 
+    public function test_getfirst_remove_function()
+    {
+        $this->messageProvider->add('test', 'Hello');
+        $this->messageProvider->add('test', 'World');
+        $this->assertEquals('Hello', $this->messageProvider->getFirst('test', true));
+        $this->assertEquals('World', $this->messageProvider->getFirst('test', true));
+    }
+
     public function test_getlast_function()
     {
         $this->assertNull($this->messageProvider->getLast('test'));
         $this->messageProvider->add('test', 'Hello');
         $this->messageProvider->add('test', 'World');
         $this->assertEquals('World', $this->messageProvider->getLast('test'));
+    }
+
+    public function test_getlast_remove_function()
+    {
+        $this->messageProvider->add('test', 'Hello');
+        $this->messageProvider->add('test', 'World');
+        $this->assertEquals('World', $this->messageProvider->getLast('test', true));
+        $this->assertEquals('Hello', $this->messageProvider->getLast('test', true));
     }
 
     public function test_has_function()

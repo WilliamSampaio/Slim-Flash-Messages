@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WilliamSampaio\SlimFlashMessages;
 
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -15,13 +16,13 @@ class SlimFlashMiddleware implements MiddlewareInterface
 {
     protected MessageProvider $messageProvider;
 
-    protected ?string $attributeName;
+    protected string $attributeName;
 
     /**
      * @param App $app
      * @param string $containerKey
      *
-     * @return SlimMiddleware
+     * @return SlimFlashMiddleware
      */
     public static function createFromContainer(
         App $app,
@@ -47,14 +48,14 @@ class SlimFlashMiddleware implements MiddlewareInterface
             );
         }
 
-        return new self($messageProvider);
+        return new self($messageProvider, $containerKey);
     }
 
     /**
      * @param MessageProvider $messageProvider
      * @param string $attributeName
      *
-     * @return SlimMiddleware
+     * @return SlimFlashMiddleware
      */
     public static function create(
         MessageProvider $messageProvider,
@@ -68,14 +69,19 @@ class SlimFlashMiddleware implements MiddlewareInterface
 
     /**
      * @param MessageProvider $messageProvider
-     * @param string|null $attributeName
+     * @param string $attributeName
      */
     public function __construct(
         MessageProvider $messageProvider,
-        ?string $attributeName = null
+        string $attributeName
     ) {
         $this->messageProvider = $messageProvider;
-        $this->attributeName = $attributeName;
+
+        if (is_string($attributeName) && !empty($attributeName)) {
+            $this->attributeName = $attributeName;
+        } else {
+            throw new InvalidArgumentException("Invalid value for attributeName.");
+        }
     }
 
     /**
@@ -90,9 +96,7 @@ class SlimFlashMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        if ($this->attributeName !== null) {
-            $request = $request->withAttribute($this->attributeName, $this->messageProvider);
-        }
+        $request = $request->withAttribute($this->attributeName, $this->messageProvider);
         return $handler->handle($request);
     }
 }
