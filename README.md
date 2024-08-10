@@ -194,3 +194,20 @@ When you complete the up process, access:
 
 - [http://localhost:8080/example1/](http://localhost:8080/example1/)
 - [http://localhost:8080/example2/](http://localhost:8080/example2/)
+
+## Tests
+
+To execute the test suite, you'll need to clone the repository and install the dependencies.
+
+```bash
+git clone https://github.com/WilliamSampaio/Slim-Flash-Messages.git
+cd Slim-Flash-Messages
+composer install
+composer test
+# Or
+# composer coverage
+```
+
+## License
+
+The MIT License (MIT). Please see [License File](https://raw.githubusercontent.com/WilliamSampaio/Slim-Flash-Messages/master/LICENSE) for more information.
