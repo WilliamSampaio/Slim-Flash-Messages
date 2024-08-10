@@ -37,6 +37,7 @@
         "php-di/php-di": "^7.0"
     },
     "require": {
+        "php": "^8.3",
         "slim/slim": "^4.14",
         "slim/psr7": "^1.7",
         "twig/twig": "^3.11"
