@@ -10,7 +10,7 @@ use WilliamSampaio\SlimFlashMessages\MessageProvider;
 use WilliamSampaio\SlimFlashMessages\SlimFlashMiddleware;
 use WilliamSampaio\SlimFlashMessages\SlimFlashTwigExtension;
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 // Create a new DI Container
 $container = new Container();
@@ -29,11 +29,13 @@ $container->set('flash', function () {
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 
+$app->setBasePath('/example2'); // Optional
+
 // Add SlimFlashMiddleware from container
 $app->add(SlimFlashMiddleware::createFromContainer($app, 'flash'));
 
 // Create Twig and add SlimFlashTwigExtension
-$twig = Twig::create(__DIR__, ['cache' => false]);
+$twig = Twig::create(__DIR__ . '/templates', ['cache' => false]);
 $twig->addExtension(SlimFlashTwigExtension::createFromContainer($app, 'flash'));
 
 // Add Twig-View Middleware
