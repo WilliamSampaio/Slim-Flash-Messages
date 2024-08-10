@@ -201,12 +201,10 @@ When you complete the up process, access:
 
 ### flash()
 
-It receives two optional parameters, `key` *(string/null = ***null***)* and *clear (bool = ***true***)*.
+It receives two optional parameters, `key` *(string/null = ***null***)* and `clear` *(bool = ***true***)*.
 
 - `key`: If is not specified, an array with all the data in storage will be returned, otherwise only the array with the data indexed by the key value will be returned.
 - `clear`: If is false, the items will not be removed from storage after the function is called.
-
-#### Usage
 
 ```twig
 {% for msg in flash('messages', false) %}
@@ -216,6 +214,42 @@ It receives two optional parameters, `key` *(string/null = ***null***)* and *cle
 </div>
 {% endfor %}
 ```
+
+### flash_first()
+
+It receives two parameters, `key` *(string)* and `remove` *(bool = ***true***)*.
+
+- `key`: First item from array with the data indexed by the key value will be returned.
+- `remove` (optional): If is false, the item will not be removed from storage after the function is called.
+
+```twig
+{% set first = flash_first('messages') %}
+<div class="alert alert-{{ first.alert }} alert-dismissible fade show" role="alert">
+    {{ first.text }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+```
+
+### flash_last()
+
+It receives two parameters, `key` *(string)* and `remove` *(bool = ***true***)*.
+
+- `key`: Last item from array with the data indexed by the key value will be returned.
+- `remove` (optional): If is false, the item will not be removed from storage after the function is called.
+
+```twig
+{% set last = flash_last('messages') %}
+<div class="alert alert-{{ last.alert }} alert-dismissible fade show" role="alert">
+    {{ last.text }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+```
+
+### flash_has()
+
+### flash_clear()
+
+### flash_clear_all()
 
 ## Tests
 
