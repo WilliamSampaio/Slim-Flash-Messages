@@ -257,7 +257,21 @@ It receives one parameters, `key` *(string)*. Checks if a key is defined in the 
 
 ### flash_clear()
 
+It receives one parameters, `key` *(string)*. Remove index associated with key from storage. Return `void`.
+
+- `key`: The key that will be removed.
+
+```twig
+{% flash_clear('messages') %}
+```
+
 ### flash_clear_all()
+
+Remove all data from storage. Return `void`.
+
+```twig
+{% flash_clear_all() %}
+```
 
 ## Tests
 
