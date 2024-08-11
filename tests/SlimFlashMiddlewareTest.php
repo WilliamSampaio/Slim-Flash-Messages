@@ -9,8 +9,9 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
-use Slim\Factory\AppFactory;
+use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
+use Slim\Psr7\Factory\ResponseFactory;
 use WilliamSampaio\SlimFlashMessages\MessageProvider;
 use WilliamSampaio\SlimFlashMessages\SlimFlashMiddleware;
 
@@ -66,8 +67,7 @@ class SlimFlashMiddlewareTest extends TestCase
     {
         $container = new Container();
         $container->set('flash', $this->messageProvider);
-        AppFactory::setContainer($container);
-        $app = AppFactory::create();
+        $app = new App(new ResponseFactory, $container);
         $this->assertInstanceOf(
             SlimFlashMiddleware::class,
             SlimFlashMiddleware::createFromContainer($app, 'flash')
@@ -76,7 +76,7 @@ class SlimFlashMiddlewareTest extends TestCase
 
     public function test_createfromcontainer_null_container()
     {
-        $app = AppFactory::create();
+        $app = new App(new ResponseFactory);
         $this->expectException(RuntimeException::class);
         SlimFlashMiddleware::createFromContainer($app, 'flash');
     }
@@ -85,8 +85,7 @@ class SlimFlashMiddlewareTest extends TestCase
     {
         $container = new Container();
         $container->set('flash', $this->messageProvider);
-        AppFactory::setContainer($container);
-        $app = AppFactory::create();
+        $app = new App(new ResponseFactory, $container);
         $this->expectException(RuntimeException::class);
         SlimFlashMiddleware::createFromContainer($app, 'flash_');
     }
@@ -95,8 +94,7 @@ class SlimFlashMiddlewareTest extends TestCase
     {
         $container = new Container();
         $container->set('flash', []);
-        AppFactory::setContainer($container);
-        $app = AppFactory::create();
+        $app = new App(new ResponseFactory, $container);
         $this->expectException(RuntimeException::class);
         SlimFlashMiddleware::createFromContainer($app, 'flash');
     }

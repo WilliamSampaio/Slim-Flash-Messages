@@ -7,7 +7,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Slim\Factory\AppFactory;
+use Slim\App;
+use Slim\Psr7\Factory\ResponseFactory;
 use Twig\TwigFunction;
 use WilliamSampaio\SlimFlashMessages\MessageProvider;
 use WilliamSampaio\SlimFlashMessages\SlimFlashTwigExtension;
@@ -38,8 +39,7 @@ class SlimFlashTwigExtensionTest extends TestCase
     {
         $container = new Container();
         $container->set('flash', $this->messageProvider);
-        AppFactory::setContainer($container);
-        $app = AppFactory::create();
+        $app = new App(new ResponseFactory, $container);
         $this->assertInstanceOf(
             SlimFlashTwigExtension::class,
             SlimFlashTwigExtension::createFromContainer($app, 'flash')
@@ -48,7 +48,7 @@ class SlimFlashTwigExtensionTest extends TestCase
 
     public function test_createfromcontainer_null_container()
     {
-        $app = AppFactory::create();
+        $app = new App(new ResponseFactory);
         $this->expectException(RuntimeException::class);
         SlimFlashTwigExtension::createFromContainer($app);
     }
@@ -57,8 +57,7 @@ class SlimFlashTwigExtensionTest extends TestCase
     {
         $container = new Container();
         $container->set('flash', $this->messageProvider);
-        AppFactory::setContainer($container);
-        $app = AppFactory::create();
+        $app = new App(new ResponseFactory, $container);
         $this->expectException(RuntimeException::class);
         SlimFlashTwigExtension::createFromContainer($app, 'flash_');
     }
@@ -67,8 +66,7 @@ class SlimFlashTwigExtensionTest extends TestCase
     {
         $container = new Container();
         $container->set('flash', []);
-        AppFactory::setContainer($container);
-        $app = AppFactory::create();
+        $app = new App(new ResponseFactory, $container);
         $this->expectException(RuntimeException::class);
         SlimFlashTwigExtension::createFromContainer($app, 'flash');
     }
