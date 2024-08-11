@@ -192,8 +192,9 @@ docker compose up -d --build
 
 When you complete the up process, access:
 
-- [http://localhost:8080/example1/](http://localhost:8080/example1/)
-- [http://localhost:8080/example2/](http://localhost:8080/example2/)
+- Example 1: [http://localhost:8080/example1/](http://localhost:8080/example1/)
+- Example 2: [http://localhost:8080/example2/](http://localhost:8080/example2/)
+- Code Coverage: [http://localhost:8080/coverage/index.html](http://localhost:8080/coverage/index.html)
 
 ## Custom Twig Functions
 

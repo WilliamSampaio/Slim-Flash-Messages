@@ -46,7 +46,7 @@
         "test": "phpunit",
         "coverage": "phpunit --coverage-html=coverage",
         "post-install-cmd": [
-            "@test"
+            "@coverage"
         ]
     }
 }

@@ -14,3 +14,5 @@ COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
 RUN a2enmod rewrite \
     && a2enmod actions
+
+CMD bash -c "composer install" && apache2-foreground

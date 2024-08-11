@@ -12,6 +12,7 @@ use RuntimeException;
 use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Psr7\Response;
 use WilliamSampaio\SlimFlashMessages\MessageProvider;
 use WilliamSampaio\SlimFlashMessages\SlimFlashMiddleware;
 
@@ -48,10 +49,13 @@ class SlimFlashMiddlewareTest extends TestCase
         $serverRequestCreator = ServerRequestCreatorFactory::create();
         $request = $serverRequestCreator->createServerRequestFromGlobals();
 
+        $requestHandlerStub = $this->createStub(App::class);
+        $requestHandlerStub->method('handle')->willReturn(new Response());
+
         $middleware = new SlimFlashMiddleware($this->messageProvider, 'flash');
         $this->assertInstanceOf(
             ResponseInterface::class,
-            $middleware->process($request, new RequestHandler())
+            $middleware->process($request, $requestHandlerStub)
         );
     }
 
