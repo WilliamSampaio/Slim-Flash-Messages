@@ -25,19 +25,19 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use WilliamSampaio\SlimFlashMessages\Flash;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
 use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
+use WilliamSampaio\SlimFlashMessages\FlashProvider;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 session_start();
-// Important! if the storage is not passed to the constructor, 
+// Important! if the storage is not passed to the constructor,
 // $_SESSION will be used
 $flash = Flash::getInstance();
 
 // Create App
 $app = AppFactory::create();
-$app->setBasePath('/example1'); // Optional
+$app->setBasePath('/example1');  // Optional
 
 // Add FlashMiddleware
 $app->add(new FlashMiddleware($flash));
@@ -45,7 +45,6 @@ $app->add(new FlashMiddleware($flash));
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function (Request $request, Response $response, $args) {
-
     // Get FlashProvider from request
     // FlashMiddleware previously took care of adding the FlashProvider to the request
     $flash = FlashProvider::fromRequest($request);
@@ -112,8 +111,8 @@ use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 use WilliamSampaio\SlimFlashMessages\Flash;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
 use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
+use WilliamSampaio\SlimFlashMessages\FlashProvider;
 use WilliamSampaio\SlimFlashMessages\FlashTwigExtension;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -123,10 +122,9 @@ $container = new Container();
 
 // Add a FlashProvider to the container
 $container->set('flash', function () {
-
     session_start();
 
-    // Important! if the storage is not passed to the constructor, 
+    // Important! if the storage is not passed to the constructor,
     // $_SESSION will be used
     return Flash::getInstance();
 });
@@ -135,7 +133,7 @@ $container->set('flash', function () {
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 
-$app->setBasePath('/example2'); // Optional
+$app->setBasePath('/example2');  // Optional
 
 // Add FlashMiddleware from container
 $app->add(FlashMiddleware::createFromContainer($app, 'flash'));
@@ -150,7 +148,6 @@ $app->add(TwigMiddleware::create($app, $twig));
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function (Request $request, Response $response, $args) {
-
     // Get Twig and FlashProvider from request
     $view = Twig::fromRequest($request);
 
@@ -177,7 +174,6 @@ $app->get('/', function (Request $request, Response $response, $args) {
         'text' => '3. Lorem ipsum!'
     ]);
 
-
     return $view->render($response, 'template.html.twig', [
         'page' => 'Slim Flash Messages',
     ]);
@@ -185,6 +181,17 @@ $app->get('/', function (Request $request, Response $response, $args) {
 
 $app->run();
 
+```
+
+In template:
+
+```twig
+{% for msg in flash('messages') %}
+<div class="alert alert-{{ msg.alert }} alert-dismissible fade show" role="alert">
+    {{ msg.text }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
 ```
 
 ### Running these examples
