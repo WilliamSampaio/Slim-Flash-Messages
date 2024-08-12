@@ -1,6 +1,5 @@
 {
     "name": "williamsampaio/slim-flash-messages",
-    "version": "0.2.0",
     "description": "Slim Framework Flash message service provider",
     "type": "library",
     "keywords": [
