@@ -20,6 +20,7 @@ Twig integration is not mandatory, as you can see in this example, where the foc
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
+use WilliamSampaio\SlimFlashMessages\Flash;
 use WilliamSampaio\SlimFlashMessages\FlashProvider;
 use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
 
@@ -28,14 +29,14 @@ require __DIR__ . '/../vendor/autoload.php';
 session_start();
 // Important! if the storage is not passed to the constructor, 
 // $_SESSION will be used
-$flash = new FlashProvider();
+$flash = Flash::getInstance();
 
 // Create App
 $app = AppFactory::create();
 $app->setBasePath('/example1'); // Optional
 
 // Add FlashMiddleware
-$app->add(new FlashMiddleware($flash, 'flash'));
+$app->add(new FlashMiddleware($flash));
 
 $app->addErrorMiddleware(true, true, true);
 
@@ -43,7 +44,7 @@ $app->get('/', function (Request $request, Response $response, $args) {
 
     // Get FlashProvider from request
     // FlashMiddleware previously took care of adding the FlashProvider to the request
-    $flash = FlashProvider::fromRequest($request, 'flash');
+    $flash = FlashProvider::fromRequest($request);
 
     // Clear all stored values
     $flash->clearAll();
@@ -106,6 +107,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
+use WilliamSampaio\SlimFlashMessages\Flash;
 use WilliamSampaio\SlimFlashMessages\FlashProvider;
 use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
 use WilliamSampaio\SlimFlashMessages\FlashTwigExtension;
@@ -122,7 +124,7 @@ $container->set('flash', function () {
 
     // Important! if the storage is not passed to the constructor, 
     // $_SESSION will be used
-    return new FlashProvider();
+    return Flash::getInstance();
 });
 
 // Set container to create App with on AppFactory
@@ -147,6 +149,7 @@ $app->get('/', function (Request $request, Response $response, $args) {
 
     // Get Twig and FlashProvider from request
     $view = Twig::fromRequest($request);
+
     // FlashMiddleware previously took care of adding the FlashProvider to the request
     $flash = FlashProvider::fromRequest($request, 'flash');
 
