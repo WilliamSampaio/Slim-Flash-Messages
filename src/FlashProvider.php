@@ -9,21 +9,12 @@ use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 
-class MessageProvider
+class FlashProvider
 {
-    /**
-     * Storage
-     *
-     * @var null|array|ArrayAccess
-     */
+    /** @var null|array|ArrayAccess */
     protected $storage;
 
-    /**
-     * Storage key
-     *
-     * @var string
-     */
-    protected $storageKey = 'slim_flash_messages';
+    protected string $storageKey = '__flash';
 
     /**
      * Create new Flash messages service provider
@@ -49,7 +40,8 @@ class MessageProvider
             throw new InvalidArgumentException('Storage must be an array or implement \ArrayAccess.');
         }
 
-        // Only if the storage key is not defined will this preserve any other previously set data
+        // Only if the storage key is not defined will this preserve
+        // any other previously set data
         if (!array_key_exists($this->storageKey, $this->storage)) {
             $this->storage[$this->storageKey] = [];
         }
@@ -187,21 +179,21 @@ class MessageProvider
 
     /**
      * @param ServerRequestInterface $request
-     * @param string $attributeName
      *
      * @return self
      */
     public static function fromRequest(
-        ServerRequestInterface $request,
-        string $attributeName = 'slim_flash_messages'
+        ServerRequestInterface $request
     ): self {
-        $messageProvider = $request->getAttribute($attributeName);
-        if (!($messageProvider instanceof self)) {
-            throw new RuntimeException(
-                'MessageProvider could not be found in the server request attributes using the key "' . $attributeName . '".'
-            );
+
+        foreach ($request->getAttributes() as $attr) {
+            if ($attr instanceof self) {
+                return $attr;
+            }
         }
 
-        return $messageProvider;
+        throw new RuntimeException(
+            'FlashProvider could not be found in the server request attributes.'
+        );
     }
 }

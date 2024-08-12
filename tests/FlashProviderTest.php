@@ -7,31 +7,38 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Slim\Factory\ServerRequestCreatorFactory;
-use WilliamSampaio\SlimFlashMessages\MessageProvider;
+use WilliamSampaio\SlimFlashMessages\FlashProvider;
 
-#[CoversClass(MessageProvider::class)]
-class MessageProviderTest extends TestCase
+#[CoversClass(FlashProvider::class)]
+class FlashProviderTest extends TestCase
 {
     private array $storage;
-    private MessageProvider $messageProvider;
+    private string $storageKey;
+    private FlashProvider $messageProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->storage = [];
-        $this->messageProvider = new MessageProvider($this->storage);
+        $this->storageKey = 'test_storage_key';
+        $this->messageProvider = new FlashProvider($this->storage, $this->storageKey);
     }
 
-    public function test_storage_valid()
+    public function test_storage_is_valid()
     {
-        $this->assertArrayHasKey('slim_flash_messages', $this->storage);
+        $this->assertInstanceOf(FlashProvider::class, $this->messageProvider);
+    }
+
+    public function test_storagekey_is_valid()
+    {
+        $this->assertArrayHasKey($this->storageKey, $this->storage);
     }
 
     public function test_storage_is_null_exception()
     {
         $this->expectException(RuntimeException::class);
         $storage = null;
-        new MessageProvider($storage);
+        new FlashProvider($storage);
     }
 
     public function test_storage_session()
@@ -39,8 +46,8 @@ class MessageProviderTest extends TestCase
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
-        new MessageProvider();
-        $this->assertArrayHasKey('slim_flash_messages', $_SESSION);
+        new FlashProvider();
+        $this->assertArrayHasKey('__flash', $_SESSION);
         session_unset();
     }
 
@@ -48,14 +55,7 @@ class MessageProviderTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $storage = false;
-        new MessageProvider($storage);
-    }
-
-    public function test_storagekey_is_valid()
-    {
-        $storage = [];
-        new MessageProvider($storage, 'test');
-        $this->assertArrayHasKey('test', $storage);
+        new FlashProvider($storage);
     }
 
     public function test_add_expect_invalid_key()
@@ -75,7 +75,7 @@ class MessageProviderTest extends TestCase
         $this->messageProvider->add('test', 'Hello');
         $this->messageProvider->add('test', ['type' => 'error', 'text' => 'Error!']);
         $this->messageProvider->add('test', 12345);
-        $this->assertCount(3, $this->storage['slim_flash_messages']['test']);
+        $this->assertCount(3, $this->storage[$this->storageKey]['test']);
     }
 
     public function test_getall_function()
@@ -132,8 +132,8 @@ class MessageProviderTest extends TestCase
         $this->messageProvider->add('test_1', 'Hello');
         $this->messageProvider->add('test_2', 'World');
         $this->messageProvider->clearAll();
-        $this->assertIsArray($this->storage['slim_flash_messages']);
-        $this->assertEmpty($this->storage['slim_flash_messages']);
+        $this->assertIsArray($this->storage[$this->storageKey]);
+        $this->assertEmpty($this->storage[$this->storageKey]);
     }
 
     public function test_clear_function()
@@ -141,23 +141,22 @@ class MessageProviderTest extends TestCase
         $this->messageProvider->add('test_1', 'Hello');
         $this->messageProvider->add('test_2', 'World');
         $this->messageProvider->clear('test_1');
-        $this->assertCount(1, $this->storage['slim_flash_messages']);
-        $this->assertArrayHasKey('test_2', $this->storage['slim_flash_messages']);
+        $this->assertCount(1, $this->storage[$this->storageKey]);
+        $this->assertArrayHasKey('test_2', $this->storage[$this->storageKey]);
     }
 
     public function test_fromrequest_function()
     {
         $serverRequestCreator = ServerRequestCreatorFactory::create();
         $request = $serverRequestCreator->createServerRequestFromGlobals();
-        $request = $request->withAttribute('slim_flash_messages', $this->messageProvider);
-        $this->assertInstanceOf(MessageProvider::class, $this->messageProvider::fromRequest($request));
+        $request = $request->withAttribute('__flash', $this->messageProvider);
+        $this->assertInstanceOf(FlashProvider::class, $this->messageProvider::fromRequest($request));
     }
 
     public function test_fromrequest_exception()
     {
         $serverRequestCreator = ServerRequestCreatorFactory::create();
         $request = $serverRequestCreator->createServerRequestFromGlobals();
-        $request = $request->withAttribute('test', $this->messageProvider);
         $this->expectException(RuntimeException::class);
         $this->messageProvider::fromRequest($request);
     }

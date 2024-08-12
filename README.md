@@ -20,30 +20,30 @@ Twig integration is not mandatory, as you can see in this example, where the foc
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
-use WilliamSampaio\SlimFlashMessages\MessageProvider;
-use WilliamSampaio\SlimFlashMessages\SlimFlashMiddleware;
+use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 // Important! if the storage is not passed to the constructor, 
 // $_SESSION will be used
-$flash = new MessageProvider();
+$flash = new FlashProvider();
 
 // Create App
 $app = AppFactory::create();
 $app->setBasePath('/example1'); // Optional
 
-// Add SlimFlashMiddleware
-$app->add(new SlimFlashMiddleware($flash, 'flash'));
+// Add FlashMiddleware
+$app->add(new FlashMiddleware($flash, 'flash'));
 
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function (Request $request, Response $response, $args) {
 
-    // Get MessageProvider from request
-    // SlimFlashMiddleware previously took care of adding the MessageProvider to the request
-    $flash = MessageProvider::fromRequest($request, 'flash');
+    // Get FlashProvider from request
+    // FlashMiddleware previously took care of adding the FlashProvider to the request
+    $flash = FlashProvider::fromRequest($request, 'flash');
 
     // Clear all stored values
     $flash->clearAll();
@@ -106,23 +106,23 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
-use WilliamSampaio\SlimFlashMessages\MessageProvider;
-use WilliamSampaio\SlimFlashMessages\SlimFlashMiddleware;
-use WilliamSampaio\SlimFlashMessages\SlimFlashTwigExtension;
+use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
+use WilliamSampaio\SlimFlashMessages\FlashTwigExtension;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 // Create a new DI Container
 $container = new Container();
 
-// Add a MessageProvider to the container
+// Add a FlashProvider to the container
 $container->set('flash', function () {
 
     session_start();
 
     // Important! if the storage is not passed to the constructor, 
     // $_SESSION will be used
-    return new MessageProvider();
+    return new FlashProvider();
 });
 
 // Set container to create App with on AppFactory
@@ -131,12 +131,12 @@ $app = AppFactory::create();
 
 $app->setBasePath('/example2'); // Optional
 
-// Add SlimFlashMiddleware from container
-$app->add(SlimFlashMiddleware::createFromContainer($app, 'flash'));
+// Add FlashMiddleware from container
+$app->add(FlashMiddleware::createFromContainer($app, 'flash'));
 
-// Create Twig and add SlimFlashTwigExtension
+// Create Twig and add FlashTwigExtension
 $twig = Twig::create(__DIR__ . '/templates', ['cache' => false]);
-$twig->addExtension(SlimFlashTwigExtension::createFromContainer($app, 'flash'));
+$twig->addExtension(FlashTwigExtension::createFromContainer($app, 'flash'));
 
 // Add Twig-View Middleware
 $app->add(TwigMiddleware::create($app, $twig));
@@ -145,10 +145,10 @@ $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function (Request $request, Response $response, $args) {
 
-    // Get Twig and MessageProvider from request
+    // Get Twig and FlashProvider from request
     $view = Twig::fromRequest($request);
-    // SlimFlashMiddleware previously took care of adding the MessageProvider to the request
-    $flash = MessageProvider::fromRequest($request, 'flash');
+    // FlashMiddleware previously took care of adding the FlashProvider to the request
+    $flash = FlashProvider::fromRequest($request, 'flash');
 
     $alerts = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
 
@@ -198,7 +198,7 @@ When you complete the up process, access:
 
 ## Custom Twig Functions
 
-`SlimFlashTwigExtension` provides these functions to your Twig templates.
+`FlashTwigExtension` provides these functions to your Twig templates.
 
 ### flash()
 

@@ -3,30 +3,31 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
-use WilliamSampaio\SlimFlashMessages\MessageProvider;
-use WilliamSampaio\SlimFlashMessages\SlimFlashMiddleware;
+use WilliamSampaio\SlimFlashMessages\Flash;
+use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 // Important! if the storage is not passed to the constructor, 
 // $_SESSION will be used
-$flash = new MessageProvider();
+$flash = Flash::getInstance();
 
 // Create App
 $app = AppFactory::create();
 $app->setBasePath('/example1'); // Optional
 
-// Add SlimFlashMiddleware
-$app->add(new SlimFlashMiddleware($flash, 'flash'));
+// Add FlashMiddleware
+$app->add(new FlashMiddleware($flash));
 
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function (Request $request, Response $response, $args) {
 
-    // Get MessageProvider from request
-    // SlimFlashMiddleware previously took care of adding the MessageProvider to the request
-    $flash = MessageProvider::fromRequest($request, 'flash');
+    // Get FlashProvider from request
+    // FlashMiddleware previously took care of adding the FlashProvider to the request
+    $flash = FlashProvider::fromRequest($request);
 
     // Clear all stored values
     $flash->clearAll();

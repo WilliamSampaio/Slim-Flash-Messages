@@ -6,23 +6,24 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
-use WilliamSampaio\SlimFlashMessages\MessageProvider;
-use WilliamSampaio\SlimFlashMessages\SlimFlashMiddleware;
-use WilliamSampaio\SlimFlashMessages\SlimFlashTwigExtension;
+use WilliamSampaio\SlimFlashMessages\Flash;
+use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
+use WilliamSampaio\SlimFlashMessages\FlashTwigExtension;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 // Create a new DI Container
 $container = new Container();
 
-// Add a MessageProvider to the container
+// Add a FlashProvider to the container
 $container->set('flash', function () {
 
     session_start();
 
     // Important! if the storage is not passed to the constructor, 
     // $_SESSION will be used
-    return new MessageProvider();
+    return Flash::getInstance();
 });
 
 // Set container to create App with on AppFactory
@@ -31,12 +32,12 @@ $app = AppFactory::create();
 
 $app->setBasePath('/example2'); // Optional
 
-// Add SlimFlashMiddleware from container
-$app->add(SlimFlashMiddleware::createFromContainer($app, 'flash'));
+// Add FlashMiddleware from container
+$app->add(FlashMiddleware::createFromContainer($app, 'flash'));
 
-// Create Twig and add SlimFlashTwigExtension
+// Create Twig and add FlashTwigExtension
 $twig = Twig::create(__DIR__ . '/templates', ['cache' => false]);
-$twig->addExtension(SlimFlashTwigExtension::createFromContainer($app, 'flash'));
+$twig->addExtension(FlashTwigExtension::createFromContainer($app, 'flash'));
 
 // Add Twig-View Middleware
 $app->add(TwigMiddleware::create($app, $twig));
@@ -45,10 +46,11 @@ $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function (Request $request, Response $response, $args) {
 
-    // Get Twig and MessageProvider from request
+    // Get Twig and FlashProvider from request
     $view = Twig::fromRequest($request);
-    // SlimFlashMiddleware previously took care of adding the MessageProvider to the request
-    $flash = MessageProvider::fromRequest($request, 'flash');
+
+    // FlashMiddleware previously took care of adding the FlashProvider to the request
+    $flash = FlashProvider::fromRequest($request, 'flash');
 
     $alerts = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
 
