@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace WilliamSampaio\SlimFlashMessages;
 
@@ -8,8 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use RuntimeException;
 use Slim\App;
+use RuntimeException;
 
 class FlashMiddleware implements MiddlewareInterface
 {
@@ -33,7 +31,6 @@ class FlashMiddleware implements MiddlewareInterface
         App $app,
         string $containerKey
     ): self {
-
         $container = $app->getContainer();
 
         if ($container === null) {
@@ -58,7 +55,7 @@ class FlashMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @param FlashProvider $messageProvider
+     * @param FlashProvider $flash
      *
      * @return FlashMiddleware
      */

@@ -1,13 +1,11 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace WilliamSampaio\SlimFlashMessages;
 
-use RuntimeException;
 use Slim\App;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use RuntimeException;
 
 class FlashTwigExtension extends AbstractExtension
 {
@@ -28,7 +26,6 @@ class FlashTwigExtension extends AbstractExtension
         App $app,
         string $containerKey = 'slim_flash_messages'
     ): self {
-
         $container = $app->getContainer();
 
         if ($container === null) {
@@ -63,7 +60,8 @@ class FlashTwigExtension extends AbstractExtension
         }
 
         $data = $this->flash->get($key);
-        if ($data === null) return [];
+        if ($data === null)
+            return [];
 
         if ($clear) {
             $this->flash->clear($key);

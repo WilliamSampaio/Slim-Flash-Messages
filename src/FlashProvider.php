@@ -1,17 +1,17 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace WilliamSampaio\SlimFlashMessages;
 
+use Psr\Http\Message\ServerRequestInterface;
 use ArrayAccess;
 use InvalidArgumentException;
-use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 
 class FlashProvider
 {
-    /** @var null|array|ArrayAccess */
+    /**
+     * @var null|array|ArrayAccess
+     */
     protected $storage;
 
     protected string $storageKey = '__flash';
@@ -185,7 +185,6 @@ class FlashProvider
     public static function fromRequest(
         ServerRequestInterface $request
     ): self {
-
         foreach ($request->getAttributes() as $attr) {
             if ($attr instanceof self) {
                 return $attr;

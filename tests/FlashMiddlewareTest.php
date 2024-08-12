@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests;
 
@@ -7,26 +7,26 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
-use RuntimeException;
-use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Response;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use Slim\App;
 use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
+use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use RuntimeException;
 
 #[CoversClass(FlashMiddleware::class)]
 #[UsesClass(FlashProvider::class)]
 class FlashMiddlewareTest extends TestCase
 {
     private array $storage;
-    private FlashProvider $messageProvider;
+    private FlashProvider $flash_provider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->storage = [];
-        $this->messageProvider = new FlashProvider($this->storage);
+        $this->flash_provider = new FlashProvider($this->storage);
     }
 
     public function test_process_instance_of()
@@ -37,7 +37,7 @@ class FlashMiddlewareTest extends TestCase
         $requestHandlerStub = $this->createStub(App::class);
         $requestHandlerStub->method('handle')->willReturn(new Response());
 
-        $middleware = new FlashMiddleware($this->messageProvider, 'flash');
+        $middleware = new FlashMiddleware($this->flash_provider, 'flash');
         $this->assertInstanceOf(
             ResponseInterface::class,
             $middleware->process($request, $requestHandlerStub)
@@ -48,14 +48,14 @@ class FlashMiddlewareTest extends TestCase
     {
         $this->assertInstanceOf(
             FlashMiddleware::class,
-            FlashMiddleware::create($this->messageProvider, 'flash')
+            FlashMiddleware::create($this->flash_provider, 'flash')
         );
     }
 
     public function test_createfromcontainer()
     {
         $container = new Container();
-        $container->set('flash', $this->messageProvider);
+        $container->set('flash', $this->flash_provider);
         $app = new App(new ResponseFactory, $container);
         $this->assertInstanceOf(
             FlashMiddleware::class,
@@ -73,7 +73,7 @@ class FlashMiddlewareTest extends TestCase
     public function test_createfromcontainer_containerkey_does_not_exist()
     {
         $container = new Container();
-        $container->set('flash', $this->messageProvider);
+        $container->set('flash', $this->flash_provider);
         $app = new App(new ResponseFactory, $container);
         $this->expectException(RuntimeException::class);
         FlashMiddleware::createFromContainer($app, 'flash_');

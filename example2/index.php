@@ -7,8 +7,8 @@ use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 use WilliamSampaio\SlimFlashMessages\Flash;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
 use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
+use WilliamSampaio\SlimFlashMessages\FlashProvider;
 use WilliamSampaio\SlimFlashMessages\FlashTwigExtension;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -18,10 +18,9 @@ $container = new Container();
 
 // Add a FlashProvider to the container
 $container->set('flash', function () {
-
     session_start();
 
-    // Important! if the storage is not passed to the constructor, 
+    // Important! if the storage is not passed to the constructor,
     // $_SESSION will be used
     return Flash::getInstance();
 });
@@ -30,7 +29,7 @@ $container->set('flash', function () {
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 
-$app->setBasePath('/example2'); // Optional
+$app->setBasePath('/example2');  // Optional
 
 // Add FlashMiddleware from container
 $app->add(FlashMiddleware::createFromContainer($app, 'flash'));
@@ -45,7 +44,6 @@ $app->add(TwigMiddleware::create($app, $twig));
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function (Request $request, Response $response, $args) {
-
     // Get Twig and FlashProvider from request
     $view = Twig::fromRequest($request);
 
@@ -71,7 +69,6 @@ $app->get('/', function (Request $request, Response $response, $args) {
         'alert' => $alerts[array_rand($alerts)],
         'text' => '3. Lorem ipsum!'
     ]);
-
 
     return $view->render($response, 'template.html.twig', [
         'page' => 'Slim Flash Messages',
