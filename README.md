@@ -1,5 +1,9 @@
 # Slim Flash Messages
 
+[![Coverage Status](https://coveralls.io/repos/github/WilliamSampaio/Slim-Flash-Messages/badge.svg?branch=master)](https://coveralls.io/github/WilliamSampaio/Slim-Flash-Messages?branch=master)
+![Packagist Downloads](https://img.shields.io/packagist/dt/WilliamSampaio/Slim-Flash-Messages)
+![GitHub License](https://img.shields.io/github/license/WilliamSampaio/Slim-Flash-Messages)
+
 This library allows you to use temporary messages in your Slim project. It is easily integrated with the Twig template system, through an extension that provides functions to grab and use in the template. It is not limited to creating simple message strings but also allows the use of other data types such as arrays.
 
 ## Install
