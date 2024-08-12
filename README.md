@@ -24,9 +24,9 @@ Twig integration is not mandatory, as you can see in this example, where the foc
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
-use WilliamSampaio\SlimFlashMessages\Flash;
-use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use SlimFlashMessages\Flash;
+use SlimFlashMessages\FlashMiddleware;
+use SlimFlashMessages\FlashProvider;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -110,10 +110,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
-use WilliamSampaio\SlimFlashMessages\Flash;
-use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
-use WilliamSampaio\SlimFlashMessages\FlashTwigExtension;
+use SlimFlashMessages\Flash;
+use SlimFlashMessages\FlashMiddleware;
+use SlimFlashMessages\FlashProvider;
+use SlimFlashMessages\FlashTwigExtension;
 
 require __DIR__ . '/../vendor/autoload.php';
 

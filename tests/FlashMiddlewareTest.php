@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests;
+namespace SlimFlashMessages\Tests;
 
 use DI\Container;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -11,8 +11,8 @@ use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Response;
 use Slim\App;
-use WilliamSampaio\SlimFlashMessages\FlashMiddleware;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use SlimFlashMessages\FlashMiddleware;
+use SlimFlashMessages\FlashProvider;
 use RuntimeException;
 
 #[CoversClass(FlashMiddleware::class)]

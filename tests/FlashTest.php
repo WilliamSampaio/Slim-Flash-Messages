@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Tests;
+namespace SlimFlashMessages\Tests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use WilliamSampaio\SlimFlashMessages\Flash;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use SlimFlashMessages\Flash;
+use SlimFlashMessages\FlashProvider;
 use RuntimeException;
 
 #[CoversClass(Flash::class)]

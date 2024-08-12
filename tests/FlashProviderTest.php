@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Tests;
+namespace SlimFlashMessages\Tests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Slim\Factory\ServerRequestCreatorFactory;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
+use SlimFlashMessages\FlashProvider;
 use InvalidArgumentException;
 use RuntimeException;
 

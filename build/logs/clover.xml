@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1723495737">
-  <project timestamp="1723495737">
-    <package name="WilliamSampaio\SlimFlashMessages">
+<coverage generated="1723496990">
+  <project timestamp="1723496990">
+    <package name="SlimFlashMessages">
       <file name="/var/www/html/src/Flash.php">
-        <class name="WilliamSampaio\SlimFlashMessages\Flash" namespace="WilliamSampaio\SlimFlashMessages">
+        <class name="SlimFlashMessages\Flash" namespace="SlimFlashMessages">
           <metrics complexity="3" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="6" coveredelements="6"/>
         </class>
         <line num="11" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
@@ -15,7 +15,7 @@
         <metrics loc="24" ncloc="24" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="6" coveredelements="6"/>
       </file>
       <file name="/var/www/html/src/FlashMiddleware.php">
-        <class name="WilliamSampaio\SlimFlashMessages\FlashMiddleware" namespace="WilliamSampaio\SlimFlashMessages">
+        <class name="SlimFlashMessages\FlashMiddleware" namespace="SlimFlashMessages">
           <metrics complexity="7" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="19" coveredstatements="19" elements="23" coveredelements="23"/>
         </class>
         <line num="18" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="3"/>
@@ -44,7 +44,7 @@
         <metrics loc="86" ncloc="67" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="19" coveredstatements="19" elements="23" coveredelements="23"/>
       </file>
       <file name="/var/www/html/src/FlashProvider.php">
-        <class name="WilliamSampaio\SlimFlashMessages\FlashProvider" namespace="WilliamSampaio\SlimFlashMessages">
+        <class name="SlimFlashMessages\FlashProvider" namespace="SlimFlashMessages">
           <metrics complexity="35" methods="10" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="47" coveredstatements="47" elements="57" coveredelements="57"/>
         </class>
         <line num="26" type="method" name="__construct" visibility="public" complexity="8" crap="8" count="19"/>
@@ -107,7 +107,7 @@
         <metrics loc="199" ncloc="130" classes="1" methods="10" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="47" coveredstatements="47" elements="57" coveredelements="57"/>
       </file>
       <file name="/var/www/html/src/FlashTwigExtension.php">
-        <class name="WilliamSampaio\SlimFlashMessages\FlashTwigExtension" namespace="WilliamSampaio\SlimFlashMessages">
+        <class name="SlimFlashMessages\FlashTwigExtension" namespace="SlimFlashMessages">
           <metrics complexity="13" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="35" coveredstatements="34" elements="41" coveredelements="39"/>
         </class>
         <line num="14" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="7"/>

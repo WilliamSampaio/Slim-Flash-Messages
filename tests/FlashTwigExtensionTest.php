@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests;
+namespace SlimFlashMessages\Tests;
 
 use DI\Container;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -8,9 +8,9 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\App;
+use SlimFlashMessages\FlashProvider;
+use SlimFlashMessages\FlashTwigExtension;
 use Twig\TwigFunction;
-use WilliamSampaio\SlimFlashMessages\FlashProvider;
-use WilliamSampaio\SlimFlashMessages\FlashTwigExtension;
 use RuntimeException;
 
 #[CoversClass(FlashTwigExtension::class)]

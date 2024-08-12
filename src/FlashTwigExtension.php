@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace WilliamSampaio\SlimFlashMessages;
+namespace SlimFlashMessages;
 
 use Slim\App;
 use Twig\Extension\AbstractExtension;
