@@ -18,8 +18,6 @@ $container = new Container();
 
 // Add a FlashProvider to the container
 $container->set('flash', function () {
-    session_start();
-
     // Important! if the storage is not passed to the constructor,
     // $_SESSION will be used
     return Flash::getInstance();

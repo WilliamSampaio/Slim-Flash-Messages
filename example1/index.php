@@ -9,7 +9,6 @@ use SlimFlashMessages\FlashProvider;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-session_start();
 // Important! if the storage is not passed to the constructor,
 // $_SESSION will be used
 $flash = Flash::getInstance();
