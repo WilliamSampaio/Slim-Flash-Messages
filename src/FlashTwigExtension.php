@@ -87,7 +87,6 @@ class FlashTwigExtension extends AbstractExtension
             new TwigFunction('flash_last', [$this, 'get_last']),
             new TwigFunction('flash_has', [$this->flash, 'has']),
             new TwigFunction('flash_clear', [$this->flash, 'clear']),
-            new TwigFunction('flash_clear_all', [$this->flash, 'clearAll']),
         ];
     }
 }

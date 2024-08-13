@@ -14,6 +14,71 @@ composer require williamsampaio/slim-flash-messages
 
 ## Usage Examples (Slim 4)
 
+```php
+// app/dependencies.php
+
+//...
+use SlimFlashMessages\Flash;
+use SlimFlashMessages\FlashProviderInterface;
+
+return function (ContainerBuilder $containerBuilder) {
+    $containerBuilder->addDefinitions([
+        //...
+        FlashProviderInterface::class => function () {
+            return Flash::getInstance();
+        },
+    ]);
+};
+```
+
+```php
+// app/middleware.php
+
+//...
+use SlimFlashMessages\FlashMiddleware;
+use SlimFlashMessages\FlashTwigExtension;
+
+return function (App $app) {
+    //...
+    $app->add(FlashMiddleware::createFromContainer($app));
+
+    // With Twig
+    $twig = Twig::create(__DIR__ . '/../templates', ['cache' => false]);
+    $twig->addExtension(FlashTwigExtension::createFromContainer($app));
+    $app->add(TwigMiddleware::create($app, $twig));
+};
+```
+
+```php
+// app/routes.php
+
+//...
+use SlimFlashMessages\FlashProvider;
+
+return function (App $app) {
+    //...
+
+    $app->get('/', function (Request $request, Response $response) {
+        
+        $flash = FlashProvider::fromRequest($request);
+        
+        $flash->add('messages', 'Hello!');
+
+        $view = Twig::fromRequest($request);
+        return $view->render($response, 'template.twig');
+    });
+
+    //...
+};
+```
+
+```twig
+{# template.twig #}
+{% for msg in flash('messages') %}
+    {{ msg }}
+{% endfor %}
+```
+
 ### Simplest possible
 
 Twig integration is not mandatory, as you can see in this example, where the focus is on demonstrating the messaging provider API.
@@ -270,20 +335,12 @@ It receives one parameters, `key` *(string)*. Checks if a key is defined in the 
 
 ### flash_clear()
 
-It receives one parameters, `key` *(string)*. Remove index associated with key from storage. Return `void`.
+It receives one optional parameters, `key` *(string)*. Removes data from storage. Return `void`.
 
-- `key`: The key that will be removed.
-
-```twig
-{% flash_clear('messages') %}
-```
-
-### flash_clear_all()
-
-Remove all data from storage. Return `void`.
+- `key` (optional): The key that will be removed. If not defined, it removes all data from the storage.
 
 ```twig
-{% flash_clear_all() %}
+{{ flash_clear('messages') }}
 ```
 
 ## Tests
