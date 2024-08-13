@@ -11,25 +11,25 @@ use RuntimeException;
 
 class FlashMiddleware implements MiddlewareInterface
 {
-    protected FlashProvider $flash;
+    protected FlashProviderInterface $flash;
 
     protected string $attributeName = 'flash_messages';
 
     public function __construct(
-        FlashProvider $flash,
+        FlashProviderInterface $flash,
     ) {
         $this->flash = $flash;
     }
 
     /**
      * @param App $app
-     * @param string $containerKey
+     * @param string $id
      *
      * @return FlashMiddleware
      */
     public static function createFromContainer(
         App $app,
-        string $containerKey
+        string $id = FlashProviderInterface::class
     ): self {
         $container = $app->getContainer();
 
@@ -37,17 +37,17 @@ class FlashMiddleware implements MiddlewareInterface
             throw new RuntimeException('The app does not have a container.');
         }
 
-        if (!$container->has($containerKey)) {
+        if (!$container->has($id)) {
             throw new RuntimeException(
-                "The specified container key does not exist: $containerKey."
+                "The specified container id does not exist: $id."
             );
         }
 
-        $flash = $container->get($containerKey);
+        $flash = $container->get($id);
 
         if (!($flash instanceof FlashProvider)) {
             throw new RuntimeException(
-                "FlashProvider instance could not be resolved via container key: $containerKey."
+                "FlashProvider instance could not be resolved via container id: $id."
             );
         }
 
@@ -60,7 +60,7 @@ class FlashMiddleware implements MiddlewareInterface
      * @return FlashMiddleware
      */
     public static function create(
-        FlashProvider $flash,
+        FlashProviderInterface $flash,
     ): self {
         return new self(
             $flash

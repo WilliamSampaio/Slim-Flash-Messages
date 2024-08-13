@@ -57,14 +57,14 @@ $app->get('/', function (Request $request, Response $response, $args) {
     var_dump($flash->getAll());
 
     // Get first item from key
-    var_dump($flash->getFirst('simple'));
+    var_dump($flash->get_first('simple'));
     // or to pick up and remove first item.
-    // var_dump($flash->getFirst('simple', true));
+    // var_dump($flash->get_first('simple', true));
 
     // Get last item from key
-    // var_dump($flash->getLast('simple'));
+    // var_dump($flash->get_last('simple'));
     // or to pick up and remove last item.
-    var_dump($flash->getLast('simple', true));
+    var_dump($flash->get_last('simple', true));
 
     var_dump($flash->get('simple'));
 

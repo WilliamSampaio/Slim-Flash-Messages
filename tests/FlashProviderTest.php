@@ -34,13 +34,6 @@ class FlashProviderTest extends TestCase
         $this->assertArrayHasKey($this->storageKey, $this->storage);
     }
 
-    public function test_storage_is_null_exception()
-    {
-        $this->expectException(RuntimeException::class);
-        $storage = null;
-        new FlashProvider($storage);
-    }
-
     public function test_storage_session()
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
@@ -49,6 +42,15 @@ class FlashProviderTest extends TestCase
         new FlashProvider();
         $this->assertArrayHasKey('__flash', $_SESSION);
         session_unset();
+    }
+
+    public function test_storage_is_null_and_session_not_is_set()
+    {
+        if (session_status() == PHP_SESSION_ACTIVE) {
+            session_destroy();
+        }
+        $this->expectException(RuntimeException::class);
+        new FlashProvider();
     }
 
     public function test_storage_invalid_exception()
@@ -90,35 +92,35 @@ class FlashProviderTest extends TestCase
         $this->assertNull($this->flash_provider->get('test_'));
     }
 
-    public function test_getfirst_function()
+    public function test_get_first_function()
     {
-        $this->assertNull($this->flash_provider->getFirst('test'));
+        $this->assertNull($this->flash_provider->get_first('test'));
         $this->flash_provider->add('test', 'Hello');
-        $this->assertEquals('Hello', $this->flash_provider->getFirst('test'));
+        $this->assertEquals('Hello', $this->flash_provider->get_first('test'));
     }
 
-    public function test_getfirst_remove_function()
+    public function test_get_first_remove_function()
     {
         $this->flash_provider->add('test', 'Hello');
         $this->flash_provider->add('test', 'World');
-        $this->assertEquals('Hello', $this->flash_provider->getFirst('test', true));
-        $this->assertEquals('World', $this->flash_provider->getFirst('test', true));
+        $this->assertEquals('Hello', $this->flash_provider->get_first('test', true));
+        $this->assertEquals('World', $this->flash_provider->get_first('test', true));
     }
 
-    public function test_getlast_function()
+    public function test_get_last_function()
     {
-        $this->assertNull($this->flash_provider->getLast('test'));
+        $this->assertNull($this->flash_provider->get_last('test'));
         $this->flash_provider->add('test', 'Hello');
         $this->flash_provider->add('test', 'World');
-        $this->assertEquals('World', $this->flash_provider->getLast('test'));
+        $this->assertEquals('World', $this->flash_provider->get_last('test'));
     }
 
-    public function test_getlast_remove_function()
+    public function test_get_last_remove_function()
     {
         $this->flash_provider->add('test', 'Hello');
         $this->flash_provider->add('test', 'World');
-        $this->assertEquals('World', $this->flash_provider->getLast('test', true));
-        $this->assertEquals('Hello', $this->flash_provider->getLast('test', true));
+        $this->assertEquals('World', $this->flash_provider->get_last('test', true));
+        $this->assertEquals('Hello', $this->flash_provider->get_last('test', true));
     }
 
     public function test_has_function()

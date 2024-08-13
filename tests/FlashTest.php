@@ -19,6 +19,14 @@ class FlashTest extends TestCase
         $this->assertInstanceOf(FlashProvider::class, Flash::getInstance($storage));
     }
 
+    public function test_get_instance_session_not_active()
+    {
+        if (session_status() == PHP_SESSION_ACTIVE) {
+            session_destroy();
+        }
+        $this->assertInstanceOf(FlashProvider::class, Flash::getInstance());
+    }
+
     public function test_construct()
     {
         $this->expectException(RuntimeException::class);

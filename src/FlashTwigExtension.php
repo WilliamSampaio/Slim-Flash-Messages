@@ -9,22 +9,22 @@ use RuntimeException;
 
 class FlashTwigExtension extends AbstractExtension
 {
-    protected FlashProvider $flash;
+    protected FlashProviderInterface $flash;
 
-    public function __construct(FlashProvider $flash)
+    public function __construct(FlashProviderInterface $flash)
     {
         $this->flash = $flash;
     }
 
     /**
      * @param App $app
-     * @param string $containerKey
+     * @param string $id
      *
      * @return FlashTwigExtension
      */
     public static function createFromContainer(
         App $app,
-        string $containerKey = 'slim_flash_messages'
+        string $id = FlashProviderInterface::class
     ): self {
         $container = $app->getContainer();
 
@@ -32,17 +32,17 @@ class FlashTwigExtension extends AbstractExtension
             throw new RuntimeException('The app does not have a container.');
         }
 
-        if (!$container->has($containerKey)) {
+        if (!$container->has($id)) {
             throw new RuntimeException(
-                "The specified container key does not exist: $containerKey."
+                "The specified container id does not exist: $id."
             );
         }
 
-        $flash = $container->get($containerKey);
+        $flash = $container->get($id);
 
         if (!($flash instanceof FlashProvider)) {
             throw new RuntimeException(
-                "FlashProvider instance could not be resolved via container key: $containerKey."
+                "FlashProvider instance could not be resolved via container id: $id."
             );
         }
 
@@ -52,9 +52,9 @@ class FlashTwigExtension extends AbstractExtension
     public function get_messages(?string $key = null, bool $clear = true)
     {
         if (is_null($key)) {
-            $data = $this->flash->getAll();
+            $data = $this->flash->get();
             if ($clear) {
-                $this->flash->clearAll();
+                $this->flash->clear();
             }
             return $data;
         }
@@ -71,12 +71,12 @@ class FlashTwigExtension extends AbstractExtension
 
     public function get_first(string $key, $remove = true)
     {
-        return $this->flash->getFirst($key, $remove);
+        return $this->flash->get_first($key, $remove);
     }
 
     public function get_last(string $key, $remove = true)
     {
-        return $this->flash->getLast($key, $remove);
+        return $this->flash->get_last($key, $remove);
     }
 
     public function getFunctions()

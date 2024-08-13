@@ -9,6 +9,7 @@ use Slim\Views\TwigMiddleware;
 use SlimFlashMessages\Flash;
 use SlimFlashMessages\FlashMiddleware;
 use SlimFlashMessages\FlashProvider;
+use SlimFlashMessages\FlashProviderInterface;
 use SlimFlashMessages\FlashTwigExtension;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -17,7 +18,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $container = new Container();
 
 // Add a FlashProvider to the container
-$container->set('flash', function () {
+$container->set(FlashProviderInterface::class, function () {
     // Important! if the storage is not passed to the constructor,
     // $_SESSION will be used
     return Flash::getInstance();
@@ -30,11 +31,11 @@ $app = AppFactory::create();
 $app->setBasePath('/example2');  // Optional
 
 // Add FlashMiddleware from container
-$app->add(FlashMiddleware::createFromContainer($app, 'flash'));
+$app->add(FlashMiddleware::createFromContainer($app));
 
 // Create Twig and add FlashTwigExtension
 $twig = Twig::create(__DIR__ . '/templates', ['cache' => false]);
-$twig->addExtension(FlashTwigExtension::createFromContainer($app, 'flash'));
+$twig->addExtension(FlashTwigExtension::createFromContainer($app));
 
 // Add Twig-View Middleware
 $app->add(TwigMiddleware::create($app, $twig));

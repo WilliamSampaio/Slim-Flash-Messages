@@ -79,6 +79,14 @@ class FlashTwigExtensionTest extends TestCase
         $this->assertEquals([0 => 'Hello World!'], $messages);
     }
 
+    public function test_get_messages_key_does_not_exist()
+    {
+        $this->flash_provider->add('teste', 'Hello World!');
+        $ext = new FlashTwigExtension($this->flash_provider);
+        $messages = $ext->get_messages('teste_');
+        $this->assertEquals([], $messages);
+    }
+
     public function test_get_messages_all()
     {
         $this->flash_provider->add('teste_1', 'Hello World!');
