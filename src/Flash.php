@@ -15,6 +15,10 @@ final class Flash
 
     public static function getInstance(&$storage = null, $storageKey = null): FlashProvider
     {
+        if ($storage === null && session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
         if (self::$instance === null) {
             self::$instance = new FlashProvider($storage, $storageKey);
         }
