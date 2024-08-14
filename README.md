@@ -35,12 +35,14 @@ return function (ContainerBuilder $containerBuilder) {
 // app/middleware.php
 
 //...
-use SlimFlashMessages\FlashMiddleware;
+// use SlimFlashMessages\FlashMiddleware;
 use SlimFlashMessages\FlashTwigExtension;
 
 return function (App $app) {
     //...
-    $app->add(FlashMiddleware::createFromContainer($app));
+    // Optional if you are working with dependency injection,
+    // using the middleware is only useful if you need to obtain the Flash instance from request.
+    // $app->add(FlashMiddleware::createFromContainer($app));
 
     // With Twig
     $twig = Twig::create(__DIR__ . '/../templates', ['cache' => false]);
@@ -50,26 +52,36 @@ return function (App $app) {
 ```
 
 ```php
-// app/routes.php
+// Your controller
 
 //...
-use SlimFlashMessages\FlashProvider;
+use Slim\Views\Twig;
+// use SlimFlashMessages\FlashProvider;
+use SlimFlashMessages\FlashProviderInterface;
 
-return function (App $app) {
+class YourController
+{
+    private $flash;
+    private $view;
+
+    public function __construct(FlashProviderInterface $flash, Twig $view)
+    {
+        $this->flash = $flash;
+        $this->view = $view;
+    }
+
+    public function index(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        // If you are working with middleware instead of dependency injection it will be this way.
+        // $flash = FlashProvider::fromRequest($request);
+
+        $this->flash->add('messages', 'Hello!');
+
+        return $this->view->render($response, 'template.twig');
+    }
+
     //...
-
-    $app->get('/', function (Request $request, Response $response) {
-        
-        $flash = FlashProvider::fromRequest($request);
-        
-        $flash->add('messages', 'Hello!');
-
-        $view = Twig::fromRequest($request);
-        return $view->render($response, 'template.twig');
-    });
-
-    //...
-};
+}
 ```
 
 ```twig
