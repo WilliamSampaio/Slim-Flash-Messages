@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1723581415">
-  <project timestamp="1723581415">
+<coverage generated="1723597577">
+  <project timestamp="1723597577">
     <package name="SlimFlashMessages">
       <file name="/var/www/html/src/Flash.php">
         <class name="SlimFlashMessages\Flash" namespace="SlimFlashMessages">
@@ -115,7 +115,7 @@
       </file>
       <file name="/var/www/html/src/FlashTwigExtension.php">
         <class name="SlimFlashMessages\FlashTwigExtension" namespace="SlimFlashMessages">
-          <metrics complexity="13" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="35" coveredstatements="35" elements="41" coveredelements="41"/>
+          <metrics complexity="13" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="34" coveredstatements="34" elements="40" coveredelements="40"/>
         </class>
         <line num="14" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="8"/>
         <line num="16" type="stmt" count="8"/>
@@ -157,13 +157,12 @@
         <line num="88" type="stmt" count="1"/>
         <line num="89" type="stmt" count="1"/>
         <line num="90" type="stmt" count="1"/>
-        <line num="91" type="stmt" count="1"/>
-        <metrics loc="94" ncloc="88" classes="1" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="35" coveredstatements="35" elements="41" coveredelements="41"/>
+        <metrics loc="93" ncloc="87" classes="1" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="34" coveredstatements="34" elements="40" coveredelements="40"/>
       </file>
     </package>
     <file name="/var/www/html/src/FlashProviderInterface.php">
       <metrics loc="60" ncloc="19" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="5" loc="438" ncloc="343" classes="4" methods="22" coveredmethods="22" conditionals="0" coveredconditionals="0" statements="112" coveredstatements="112" elements="134" coveredelements="134"/>
+    <metrics files="5" loc="437" ncloc="342" classes="4" methods="22" coveredmethods="22" conditionals="0" coveredconditionals="0" statements="111" coveredstatements="111" elements="133" coveredelements="133"/>
   </project>
 </coverage>
