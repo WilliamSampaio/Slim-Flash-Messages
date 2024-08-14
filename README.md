@@ -1,6 +1,6 @@
 # Slim Flash Messages
 
-[![Coverage Status](https://coveralls.io/repos/github/WilliamSampaio/Slim-Flash-Messages/badge.svg?branch=master)](https://coveralls.io/github/WilliamSampaio/Slim-Flash-Messages?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/WilliamSampaio/Slim-Flash-Messages/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/WilliamSampaio/Slim-Flash-Messages?branch=master)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/WilliamSampaio/Slim-Flash-Messages)
 ![GitHub License](https://img.shields.io/github/license/WilliamSampaio/Slim-Flash-Messages)
 
