@@ -45,7 +45,7 @@ class FlashMiddleware implements MiddlewareInterface
 
         $flash = $container->get($id);
 
-        if (!($flash instanceof FlashProvider)) {
+        if (!($flash instanceof FlashProviderInterface)) {
             throw new RuntimeException(
                 "FlashProvider instance could not be resolved via container id: $id."
             );
